@@ -6,6 +6,7 @@ defmodule Clockr.MasterclockCrypt do
   # data should be a list of bytes to be encrypted
   @doc """
     Transforms a list bytes using the Masterclock algorithm
+    Returns binary string
   """
   def mccrypt(data) do
     {bytes, _, _} = Enum.reduce data, {[], 1, 0}, fn(inbyte, acc) ->
@@ -17,10 +18,7 @@ defmodule Clockr.MasterclockCrypt do
     bytes
   end
 
-  @doc """
-    Transforms a single byte using the Masterclock algorithm
-  """
-  def mccrypt_byte({byte, padcnt, keycnt}) do
+  defp mccrypt_byte({byte, padcnt, keycnt}) do
     crypted_byte = (byte ^^^ padcnt ^^^ elem(@prog_key, keycnt))
 
     newpadcnt = if(padcnt < 254, do: padcnt + 1, else: 1)
