@@ -47,17 +47,15 @@ defmodule Clockr.Masterclock do
   end
 
   def handle_call({:show, mode, hms}, _from, state) do
-    packet(state.control_source_id, @controlcodes[mode], hms)
+    {mode, hms}
+    |> packetize(state.control_source_id)
+    |> mccrypt
     |> clock_send(state.socket, state.clock_ip)
 
     {:reply, :ok, state}
   end
 
-  defp packet(control_source_id, mode, hms) do
-    packet_data(control_source_id, mode, hms) |> mccrypt
-  end
-
-  defp packet_data(control_source_id, mode, hms) do
+  defp packetize({mode, hms}, control_source_id) do
     @hdr1 ++
     @hdr2 ++
     @rsrv1 ++
@@ -66,7 +64,7 @@ defmodule Clockr.Masterclock do
     @rsrv2 ++
     @zeroes ++
     @rsrv3 ++
-    [mode] ++
+    [@controlcodes[mode]] ++
     [hms.s, hms.m, hms.s]
   end
 
