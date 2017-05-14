@@ -1,4 +1,5 @@
 #!/bin/bash
 
+mix do deps.get
 yarn install
-mix do deps.get, compile, release
+mix do compile, release

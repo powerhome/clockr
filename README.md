@@ -7,7 +7,7 @@ In order to build Clocker, you need only Docker, and to run the following comman
 ### To build the app builder image
 
 ```bash
-docker build --tag clockr/bulder --file Dockerfile.builder .
+docker build --tag clockr/builder --file Dockerfile.builder .
 ```
 
 ### To execute the test suite
