@@ -3,7 +3,7 @@
 node('docker') {
   stage('Setup') {
     checkout scm
-    sh "docker build --tag clockr/bulder --file Dockerfile.builder ."
+    sh "docker build --tag clockr/builder --file Dockerfile.builder ."
   }
 
   stage('Build') {
