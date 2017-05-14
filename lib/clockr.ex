@@ -1,4 +1,8 @@
 defmodule Clockr do
+  @moduledoc """
+  Clockr manages the information displayed on installed clock faces
+  """
+
   use Application
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
