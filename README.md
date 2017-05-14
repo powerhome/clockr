@@ -1,19 +1,38 @@
 # Clockr
 
-To start your Phoenix app:
+## Building
 
-  * Install dependencies with `mix deps.get`
-  * Install Node.js dependencies with `npm install`
-  * Start Phoenix endpoint with `mix phoenix.server`
+In order to build Clocker, you need only Docker, and to run the following commands:
+
+### To build the app builder image
+
+```bash
+docker build --tag clockr/bulder --file Dockerfile.builder .
+```
+
+### To execute the test suite
+
+```bash
+docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=test clockr/builder mix do deps.get, test, credo
+```
+
+### To run a development server
+
+```bash
+docker run --interactive --rm --volume $(pwd):/src/clockr --publish 4000:4000 clockr/builder iex -S mix do deps.get, phoenix.server
+```
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+### To build a production node
 
-## Learn more
+```bash
+docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=prod clockr/builder
+docker build --tag clockr/node --file Dockerfile.run .
+```
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+## Usage in production
+
+```bash
+docker run --publish 8888:8888 clockr/node
+```
