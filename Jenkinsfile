@@ -11,7 +11,7 @@ node('docker') {
     sh 'docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=test clockr/builder mix do deps.get, test, credo'
   }
 
-  stage('Build') {
+  stage('Release') {
     sh 'docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=prod clockr/builder'
     sh "docker build --tag clockr/node --file Dockerfile.run ."
   }
