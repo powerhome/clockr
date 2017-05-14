@@ -7,7 +7,7 @@ node('docker') {
   }
 
   stage('Build') {
-    sh "docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=prod clockr/builder"
+    sh 'docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=prod clockr/builder'
     sh "docker build --tag clockr/node --file Dockerfile.run ."
   }
 
