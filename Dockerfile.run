@@ -1,0 +1,20 @@
+FROM ubuntu
+
+RUN apt-get update && \
+    apt-get install -y libssl1.0.0 locales && \
+    apt-get autoclean
+
+RUN mkdir -p /app
+ARG VERSION=0.0.1
+COPY _build/prod/rel/clockr/releases/${VERSION}/clockr.tar.gz /app/clockr.tar.gz
+
+WORKDIR /app
+RUN tar xvzf clockr.tar.gz -C /app
+
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+ENV PORT 8888
+
+CMD ["/app/bin/clockr", "foreground"]
