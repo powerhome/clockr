@@ -13,7 +13,7 @@ docker build --tag clockr/bulder --file Dockerfile.builder .
 ### To execute the test suite
 
 ```bash
-docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=test clockr/builder mix do deps.get, test
+docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=test clockr/builder mix do deps.get, test, credo
 ```
 
 ### To run a development server

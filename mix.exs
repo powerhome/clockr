@@ -34,6 +34,7 @@ defmodule Clockr.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:distillery, "~> 1.4"}]
+     {:distillery, "~> 1.4"},
+     {:credo, "~> 0.3", only: [:dev, :test]}]
   end
 end
