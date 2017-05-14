@@ -1,4 +1,8 @@
 defmodule Clockr.Masterclock do
+  @moduledoc """
+  Control node for an individual clock face
+  """
+
   use GenServer
   import Clockr.MasterclockCrypt
 
@@ -21,8 +25,11 @@ defmodule Clockr.Masterclock do
     dashes:  0x03,
   }
 
-  # @option opts [Integer] :control_addr source control address, between 0 and 65535
-  # @option opts [String]  :clock_ip Direct IP address of the clock; defaults to MULTICAST_ADDR
+  # TODO: Format these docs better
+  @doc """
+    @option opts [Integer] :control_addr source control address, between 0 and 65535
+    @option opts [String]  :clock_ip Direct IP address of the clock; defaults to MULTICAST_ADDR
+  """
   def start_link(clock = %{control_source_id: control_source_id}, opts \\ []) do
     {control_source_id, _} = Integer.parse(control_source_id, 16)
 
