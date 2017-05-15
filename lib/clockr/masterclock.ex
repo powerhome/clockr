@@ -72,7 +72,7 @@ defmodule Clockr.Masterclock do
     @zeroes ++
     @rsrv3 ++
     [@controlcodes[mode]] ++
-    [hms.s, hms.m, hms.s]
+    [hms.s, hms.h, hms.m]
   end
 
   defp clock_send(data, socket, clock_ip) do
