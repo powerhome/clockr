@@ -36,3 +36,7 @@ docker build --tag clockr/node --file Dockerfile.run .
 ```bash
 docker run --publish 8888:8888 clockr/node
 ```
+
+## Credits
+
+Copyright 2017 Power Home Remodelling Group, LLC. See the LICENSE file for more information.
