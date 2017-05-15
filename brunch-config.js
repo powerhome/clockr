@@ -34,13 +34,15 @@ exports.config = {
     // This option sets where we should place non-css and non-js assets in.
     // By default, we set this to "/web/static/assets". Files in this directory
     // will be copied to `paths.public`, which is "priv/static" by default.
-    assets: /^(web\/static\/assets)/
+    assets: /^(web\/static\/assets)/,
+    ignored: /^(web\/elm\/elm-stuff)/
   },
 
   // Phoenix paths configuration
   paths: {
     // Dependencies and current project directories to watch
     watched: [
+      "web/elm",
       "web/static",
       "test/static"
     ],
@@ -51,6 +53,13 @@ exports.config = {
 
   // Configure your plugins
   plugins: {
+    elmBrunch: {
+      executablePath: '../../node_modules/elm/binwrappers',
+      makeParameters: ['--debug'],
+      elmFolder: 'web/elm',
+      mainModules: ['Main.elm'],
+      outputFolder: '../static/js',
+    },
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/web\/static\/vendor/]
