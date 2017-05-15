@@ -49,7 +49,7 @@ defmodule Clockr.Masterclock do
     show(pid, mode, %{h: h, m: m, s: 0})
   end
   def show(pid, mode) do
-    # Used for mode == :blank
+    # Used for modes :blank, :time, :dashes
     show(pid, mode, %{h: 0, m: 0, s: 0})
   end
 
