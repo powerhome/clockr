@@ -19,7 +19,7 @@ docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=test clo
 ### To run a development server
 
 ```bash
-docker run --interactive --rm --volume $(pwd):/src/clockr --publish 4000:4000 clockr/builder iex -S mix do deps.get, phoenix.server
+docker run --interactive --rm --volume $(pwd):/src/clockr --publish 4000:4000 clockr/builder ./dev.sh
 ```
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
@@ -36,3 +36,7 @@ docker build --tag clockr/node --file Dockerfile.run .
 ```bash
 docker run --publish 8888:8888 clockr/node
 ```
+
+## Credits
+
+Copyright 2017 Power Home Remodelling Group, LLC. See the LICENSE file for more information.
