@@ -3,15 +3,11 @@ sudo: required
 services:
   - docker
 
-jobs:
-  include:
-    - stage: Prepare build environment
-      script:
-        - docker build --tag clockr/builder --file Dockerfile.builder .
-    - stage: Test
-      script:
-        - docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=test clockr/builder mix do deps.get, test, credo
-    - stage: Build release image
-      script:
-        - docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=prod clockr/builder
-        - docker build --tag clockr/node --file Dockerfile.run .
+before_script:
+  - docker build --tag powerhome/clockr-builder --file Dockerfile.builder .
+
+script: docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=test powerhome/clockr-builder mix do deps.get, test, credo
+
+after_success:
+  - docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=prod powerhome/clockr-builder
+  - docker build --tag powerhome/clockr --file Dockerfile.run .
