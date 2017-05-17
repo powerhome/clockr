@@ -1,0 +1,23 @@
+sudo: required
+
+services:
+  - docker
+
+before_script:
+  - docker build --tag powerhome/clockr-builder --file Dockerfile.builder .
+
+script: docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=test powerhome/clockr-builder mix do deps.get, test, credo
+
+after_success:
+  - docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=prod powerhome/clockr-builder
+  - docker build --tag powerhome/clockr:${TRAVIS_JOB_NUMBER} --file Dockerfile.run .
+  - docker login --username "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
+  - docker tag powerhome/clockr:${TRAVIS_JOB_NUMBER} powerhome/clockr:latest
+  - docker push powerhome/clockr:${TRAVIS_JOB_NUMBER}
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - if [ "${BRANCH}" == "master" ]; then docker push powerhome/clockr:latest; fi
+
+env:
+  global:
+    - secure: ND+R1IFIi43NzrnYL5/GL2CeG1WZOL+XTZxO6KDhf1KE8aH7vOIAdTMoYw5rNbFgWDTxrtAJnAB9FrCs/EoxRuNpTv8eNcM7HF3RSfsKwps3kQqt6A6LHe8yq9Yi2Rm838fDEOYL7VsQJLeHkNHCYVDDZf43x2QuN5ojMZe/BZ+8Ijv/SIwWVEeyMd46pmDhMGQJQrSgxWpX1tSy6htWUAMGJd9pzEm+G42bpsCTi7voVsBHC5eNHscY6pVZCYWPZuKiBItLjvsvuytHQeJvG/uM7qkAvc+GwcMp1Me+S7r5Z/TwdYcz0IozaPz5UfV5NNxgtx64NOJ/mElDiu7Bu4LFycjrAMUX9lFN6D2sevCPiNNEOoglFuuSBpdgf1T4N2kgxR0Ph4/+WrBOHEizFNj1WIkQilAyaFm9fxijAowUEQsHe3TS2MTcQnX3OYU8zg60O617VwBwfduovkpGSQHtL76peTUUThAyi5TRcPAHrR/MTVXkTmASQdsBp3GnddzvDaKabdLYGeWCQ3A3bnhmjpD1AUS79UhcTJWmoT7+xvjM63J0yZN74vbSswizAtTbsjrR9sKhMdNfqdDAczvNAS6UcXhwhSJcpj0DcPAsrE9+AWYroU4xEYnYcPiumI9k+Fv772H+Ad+1QoGGcvtTl4CBAtdtLmlfa0pwrPQ=
+    - secure: cGvht72BTlu72A48W7P829ZtF+Lb2WOExnQOSyRKdI18no4AdVJSAWGxOHMpYng8h6p6wtGzeaB5MxrbUAWotNqi+3x7dKiASF/EmE1TFq2cfncMPSyCtRdqsVOYqN2yZV+ufAEe0eW45kZ3esZuGRjUG6eACVlRLvjSzgZwOTPJuOE5H9MQGcKyZNVDGw+toaVL+ylSRAq2ZyUKQFabUZNncBFtkIri1ko7+fhySW0TIKk9Xi4D71Rk6wJEPEzbhIz2WucppFudhL1jFBFfBi+RkXYnZSX5r1NSrB+mI5XwMYAS70zoVAOb4sAKg7doL9yhBA4/4rDWKBZu0sQKUOBmeSZN0IJkliZhAf18vvditoU7yZ7bpwnzcFs6lGplzVw5+l05wlVEuFX1LFTluS6VPDFtWD2AMsMtlfGxINR5huA+VwFk/XcwsI19wnHQy5huJ/XQaEMwuyWr2KNun9pHMgELdogzUGwYyXvfVOLRiWR05J1Yhea0fXzFnkqKpOZQx/3eeEnTIuZKjsX6NnopF2wDgWF08lWGqCqJzkBY8/SOhLvh9rqwm6EAGE+1SUX/PoD3jk1Xw/6P25rItKJ+0ggHhGy9cqp9QGZjYcHhvfKUE0ShrMe8ltLd/Nz9w8l5AgMwfpJPzgxeabSxhUjCCk4jB8bQ7CT2DiDI7ec=
