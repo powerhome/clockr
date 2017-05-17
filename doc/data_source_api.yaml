@@ -1,0 +1,97 @@
+---
+# To read this in a visual UI, go to http://petstore.swagger.io/ and point
+# at a link to the raw version of this document on github
+swagger: '2.0'
+basePath: '/'
+schemes:
+  - http
+  - https
+consumes:
+  - 'application/json'
+produces:
+  - 'application/json'
+
+info:
+  version: '1.0.0'
+  title: 'Clockr Data Source API'
+  contact:
+    name: 'Power Home Remodelling Group, LLC'
+    url: 'http://tech.powerhrg.com/clockr'
+  license:
+    name: 'Apache 2.0'
+
+  description: |
+    This API describes the interface Clockr expects of its data source service
+    in order to manage clock faces.
+
+paths:
+  /:
+    get:
+      description: List all clocks to be controlled
+      consumes:
+        - application/json
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/response"
+        4xx:
+          description: An error ocurred
+          schema:
+            $ref: "#/definitions/error"
+
+definitions:
+  clock:
+    type: object
+    properties:
+      id:
+        type: string
+        description: An opaque unique identifier for the clock
+      name:
+        type: string
+        description: A human-readable name for the clock
+      ip:
+        type: string
+        description: The IP address at which the clock can be reached
+      mode:
+        type: string
+        description: The control mode for the clock face
+        enum:
+          - time
+          - countdown
+        default: time
+      target:
+        type: string
+        description: |
+          The target the clock-face should display in the selected mode.
+          For "time" this has no effect. For "countdown" it is the
+          RFC8601 timestamp the clock should count down to.
+        format: date-time
+    required:
+      - id
+      - name
+      - ip
+  clocks:
+    type: array
+    items:
+      $ref: "#/definitions/clock"
+  response:
+    type: object
+    properties:
+      calls:
+        $ref: "#/definitions/clocks"
+    required:
+      - clocks
+  error:
+    type: object
+    required:
+      - status
+      - error
+    properties:
+      status:
+        type: string
+        enum:
+          - error
+      error:
+        type: string
+        description: "The error details"
