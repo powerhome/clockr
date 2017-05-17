@@ -12,7 +12,10 @@ after_success:
   - docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=prod powerhome/clockr-builder
   - docker build --tag powerhome/clockr:${TRAVIS_JOB_NUMBER} --file Dockerfile.run .
   - docker login --username "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
+  - docker tag powerhome/clockr:${TRAVIS_JOB_NUMBER} powerhome/clockr:latest
   - docker push powerhome/clockr:${TRAVIS_JOB_NUMBER}
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - if [ "${BRANCH}" == "master" ]; then docker push powerhome/clockr:latest; fi
 
 env:
   global:
