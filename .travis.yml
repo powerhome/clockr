@@ -4,9 +4,9 @@ services:
   - docker
 
 before_script:
-  - docker build --tag powerhome/clockr-builder --file Dockerfile.builder .
+  - make build_builder
 
-script: docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=test powerhome/clockr-builder mix do deps.get, test, credo
+script: make test
 
 after_success:
   - docker run --interactive --rm --volume $(pwd):/src/clockr --env MIX_ENV=prod powerhome/clockr-builder
