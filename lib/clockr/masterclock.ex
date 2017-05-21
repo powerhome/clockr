@@ -14,7 +14,7 @@ defmodule Clockr.Masterclock do
   @doc """
     The clock properties are:
 
-    control_addr: The binary string representation of the source control address, between 0 and 65535.
+    control_source_id: The binary string representation of the source control address, between 0 and 65535.
       Uniquely identifies the controlling processs.
     clock_ip: IP address of the clock as a charlist; defaults to MULTICAST_ADDR if not specified.
   """
