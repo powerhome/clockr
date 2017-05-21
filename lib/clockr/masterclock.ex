@@ -29,11 +29,14 @@ defmodule Clockr.Masterclock do
 
     {:ok, clock_ip} = :inet.parse_address(clock[:clock_ip] || @multicast_addr)
 
+    data = %{control_source_id: padded_control_source_id, clock_ip: clock_ip, socket: nil}
+    GenServer.start_link(__MODULE__, data, opts)
+  end
+
+  def init(state) do
     {:ok, socket} = :gen_udp.open(0)
     Process.link(socket)
-
-    data = %{control_source_id: padded_control_source_id, clock_ip: clock_ip, socket: socket}
-    GenServer.start_link(__MODULE__, data, opts)
+    {:ok, %{state | socket: socket}}
   end
 
   def show(pid, mode, hms = %{h: _, m: _, s: _}) do
