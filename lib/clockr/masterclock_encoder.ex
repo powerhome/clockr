@@ -52,6 +52,9 @@ defmodule Clockr.MasterclockEncoder do
   end
 
   defp integer_to_bytes(id) do
+    # Convert numbers 0-65535 into 2-byte representation
+    # Take the most significant 8 bits and shift right so they become the first byte
+    # Then, mask off the least significant 8 bits so they remaining become the second byte
     [id >>> 8, id &&& 0xff]
   end
 end
