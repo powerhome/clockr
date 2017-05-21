@@ -29,8 +29,8 @@ defmodule Clockr.Masterclock do
 
     {:ok, clock_ip} = :inet.parse_address(clock[:clock_ip] || @multicast_addr)
 
-    # TODO: Remember to close this socket on actor shutdown
     {:ok, socket} = :gen_udp.open(0)
+    Process.link(socket)
 
     data = %{control_source_id: padded_control_source_id, clock_ip: clock_ip, socket: socket}
     GenServer.start_link(__MODULE__, data, opts)
