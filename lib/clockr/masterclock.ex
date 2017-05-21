@@ -11,10 +11,12 @@ defmodule Clockr.Masterclock do
   @clock_port 6168
   def clock_port, do: @clock_port
 
-  # TODO: Format these docs better
   @doc """
-    @option opts [Integer] :control_addr source control address, between 0 and 65535
-    @option opts [String]  :clock_ip Direct IP address of the clock; defaults to MULTICAST_ADDR
+    The clock properties are:
+
+    control_addr: The binary string representation of the source control address, between 0 and 65535.
+      Uniquely identifies the controlling processs.
+    clock_ip: IP address of the clock as a charlist; defaults to MULTICAST_ADDR if not specified.
   """
   def start_link(clock = %{control_source_id: control_source_id}, opts \\ []) do
     {control_source_id, _} = Integer.parse(control_source_id, 16)
