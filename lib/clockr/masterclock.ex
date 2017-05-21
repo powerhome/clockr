@@ -8,6 +8,7 @@ defmodule Clockr.Masterclock do
 
   @multicast_addr '237.252.0.0'
   @clock_port 6168
+  def clock_port, do: @clock_port
 
   @hdr1     [0x23, 0x81, 0xd7, 0x65]
   @hdr2     [0x10, 0xb3, 0x2f, 0xe1]
