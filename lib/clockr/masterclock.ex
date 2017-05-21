@@ -21,7 +21,7 @@ defmodule Clockr.Masterclock do
   def start_link(clock = %{control_source_id: control_source_id}, opts \\ []) do
     {control_source_id, _} = Integer.parse(control_source_id, 16)
 
-    true = (control_source_id <= 65535)
+    true = (control_source_id <= 65_535)
 
     {:ok, clock_ip} = :inet.parse_address(clock[:clock_ip] || @multicast_addr)
 
