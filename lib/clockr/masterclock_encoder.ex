@@ -23,7 +23,7 @@ defmodule Clockr.MasterclockEncoder do
     @hdr1 ++
     @hdr2 ++
     @rsrv1 ++
-    [control_source_id] ++
+    Tuple.to_list(control_source_id) ++
     @family ++
     @rsrv2 ++
     @zeroes ++
