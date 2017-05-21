@@ -55,7 +55,6 @@ defmodule Clockr.Masterclock do
   end
 
   defp clock_send(data, socket, clock_ip) do
-    # TODO: Error handling
-    :gen_udp.send(socket, clock_ip, @clock_port, data)
+    :ok = :gen_udp.send(socket, clock_ip, @clock_port, data)
   end
 end
