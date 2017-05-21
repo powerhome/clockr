@@ -35,6 +35,7 @@ defmodule Clockr.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:distillery, "~> 1.4"},
-     {:credo, "~> 0.3", only: [:dev, :test]}]
+     {:credo, "~> 0.3", only: [:dev, :test]},
+     {:mix_test_watch, "~> 0.2", only: [:dev, :test], runtime: false}]
   end
 end
